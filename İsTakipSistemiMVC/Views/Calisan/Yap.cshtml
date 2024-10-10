@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Yap";
+    Layout = "~/Views/Shared/_LayoutCalisan.cshtml";
+}
+
+<div class="container mt-5">
+    @foreach(var i in ViewBag.isler)
+    {
+        using (Html.BeginForm("Yap", "Calisan", FormMethod.Post))
+                {
+                    <div class="card">
+                        <div class="card-header text-center">
+                            @i.isBaslik
+                        </div>
+                        <div class="card-body">
+                            
+                            <input type="hidden" name="IsId" value="@i.IsId" />
+                            <div class="mb-3">
+                                İş Açıklaması : @i.isAciklama
+                            </div>
+                            <div class="mb-3">
+                                <label for="isYorum" class="form-label" >Yorum Giriniz: </label>
+                                <input type="text" class="form-control" id="isYorum" name="isYorum" />
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-outline-success">Tamamla</button>
+                        </div>
+                    </div>
+                    <br />
+                }
+    }
+</div>
+

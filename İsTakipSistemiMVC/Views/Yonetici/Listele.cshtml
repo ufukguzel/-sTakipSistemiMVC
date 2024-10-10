@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Listele";
+    Layout = "~/Views/Shared/_LayoutYönetici.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="mb-3">
+        <h3> @ViewBag.personel.personelAdSoyad İşleri</h3>
+    </div>
+    @if (ViewBag.isSayisi != 0)
+    {
+        foreach (var i in ViewBag.isler)
+        {
+            <div class="card">
+                <div class="card-header bg-black text-center text-white">
+                    @i.isBaslik
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@i.isAciklama</li>
+                        <li class="list-group-item">İletilen Tarih: @i.iletilenTarih.ToString("dd MMM yyy hh:mm")</li>
+                        <li class="list-group-item">Yapılan Tarih: @(i.yapilanTarih != null ? i.yapilanTarih?.ToString("dd MMM yyy hh:mm") : "Henüz Girilmedi")</li>
+                        <li class="list-group-item">İş Durumu: @i.Durumlar.durumAd</li>
+                        <li class="list-group-item">İş Yorumu: @i.isYorum</li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+        }
+
+    }
+    else
+            {
+        <div class="alert alert-secondary" role="alert">
+            Henüz İş Verilmemiş
+        </div>
+
+            }
+
+</div>
+

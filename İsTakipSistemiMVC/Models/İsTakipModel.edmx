@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="IsTakipDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Birimler">
+          <Key>
+            <PropertyRef Name="birimId" />
+          </Key>
+          <Property Name="birimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="birimAd" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Durumlar">
+          <Key>
+            <PropertyRef Name="durumId" />
+          </Key>
+          <Property Name="durumId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="durumAd" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Isler">
+          <Key>
+            <PropertyRef Name="IsId" />
+          </Key>
+          <Property Name="IsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="isBaslik" Type="nvarchar(max)" />
+          <Property Name="isAciklama" Type="nvarchar(max)" />
+          <Property Name="isPersonelId" Type="int" />
+          <Property Name="iletilenTarih" Type="datetime" />
+          <Property Name="yapilanTarih" Type="datetime" />
+          <Property Name="isDurumId" Type="int" />
+          <Property Name="isYorum" Type="nvarchar(max)" />
+          <Property Name="isOkunma" Type="bit" />
+        </EntityType>
+        <EntityType Name="Personeller">
+          <Key>
+            <PropertyRef Name="personelId" />
+          </Key>
+          <Property Name="personelId" Type="int" Nullable="false" />
+          <Property Name="personelAdSoyad" Type="nvarchar" MaxLength="50" />
+          <Property Name="personelKullaniciAd" Type="nvarchar" MaxLength="50" />
+          <Property Name="personelParola" Type="nvarchar" MaxLength="50" />
+          <Property Name="personelBirimId" Type="int" />
+          <Property Name="personelYetkiTurId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="YetkiTurler">
+          <Key>
+            <PropertyRef Name="yetkiTurId" />
+          </Key>
+          <Property Name="yetkiTurId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetkiTurAd" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Isler_Durumlar">
+          <End Role="Durumlar" Type="Self.Durumlar" Multiplicity="0..1" />
+          <End Role="Isler" Type="Self.Isler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Durumlar">
+              <PropertyRef Name="durumId" />
+            </Principal>
+            <Dependent Role="Isler">
+              <PropertyRef Name="isDurumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Isler_Personeller">
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="0..1" />
+          <End Role="Isler" Type="Self.Isler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personeller">
+              <PropertyRef Name="personelId" />
+            </Principal>
+            <Dependent Role="Isler">
+              <PropertyRef Name="isPersonelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_Birimler">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Role="YetkiTurler" Type="Self.YetkiTurler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IsTakipDBModelStoreContainer">
+          <EntitySet Name="Birimler" EntityType="Self.Birimler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Durumlar" EntityType="Self.Durumlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Isler" EntityType="Self.Isler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Personeller" EntityType="Self.Personeller" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Isler_Durumlar" Association="Self.FK_Isler_Durumlar">
+            <End Role="Durumlar" EntitySet="Durumlar" />
+            <End Role="Isler" EntitySet="Isler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Isler_Personeller" Association="Self.FK_Isler_Personeller">
+            <End Role="Personeller" EntitySet="Personeller" />
+            <End Role="Isler" EntitySet="Isler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="Self.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IsTakipDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Birimler">
+          <Key>
+            <PropertyRef Name="birimId" />
+          </Key>
+          <Property Name="birimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="birimAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Personeller" Relationship="Self.FK_Personeller_Birimler" FromRole="Birimler" ToRole="Personeller" />
+        </EntityType>
+        <EntityType Name="Durumlar">
+          <Key>
+            <PropertyRef Name="durumId" />
+          </Key>
+          <Property Name="durumId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="durumAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Isler" Relationship="Self.FK_Isler_Durumlar" FromRole="Durumlar" ToRole="Isler" />
+        </EntityType>
+        <EntityType Name="Isler">
+          <Key>
+            <PropertyRef Name="IsId" />
+          </Key>
+          <Property Name="IsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="isBaslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isAciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isPersonelId" Type="Int32" />
+          <Property Name="iletilenTarih" Type="DateTime" Precision="3" />
+          <Property Name="yapilanTarih" Type="DateTime" Precision="3" />
+          <Property Name="isDurumId" Type="Int32" />
+          <NavigationProperty Name="Durumlar" Relationship="Self.FK_Isler_Durumlar" FromRole="Isler" ToRole="Durumlar" />
+          <NavigationProperty Name="Personeller" Relationship="Self.FK_Isler_Personeller" FromRole="Isler" ToRole="Personeller" />
+          <Property Name="isYorum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isOkunma" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Personeller">
+          <Key>
+            <PropertyRef Name="personelId" />
+          </Key>
+          <Property Name="personelId" Type="Int32" Nullable="false" />
+          <Property Name="personelAdSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="personelKullaniciAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="personelParola" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="personelBirimId" Type="Int32" />
+          <Property Name="personelYetkiTurId" Type="Int32" />
+          <NavigationProperty Name="Birimler" Relationship="Self.FK_Personeller_Birimler" FromRole="Personeller" ToRole="Birimler" />
+          <NavigationProperty Name="Isler" Relationship="Self.FK_Isler_Personeller" FromRole="Personeller" ToRole="Isler" />
+          <NavigationProperty Name="YetkiTurler" Relationship="Self.FK_Personeller_YetkiTurler" FromRole="Personeller" ToRole="YetkiTurler" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="YetkiTurler">
+          <Key>
+            <PropertyRef Name="yetkiTurId" />
+          </Key>
+          <Property Name="yetkiTurId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetkiTurAd" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Personeller" Relationship="Self.FK_Personeller_YetkiTurler" FromRole="YetkiTurler" ToRole="Personeller" />
+        </EntityType>
+        <Association Name="FK_Personeller_Birimler">
+          <End Role="Birimler" Type="Self.Birimler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Birimler">
+              <PropertyRef Name="birimId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelBirimId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Isler_Durumlar">
+          <End Role="Durumlar" Type="Self.Durumlar" Multiplicity="0..1" />
+          <End Role="Isler" Type="Self.Isler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Durumlar">
+              <PropertyRef Name="durumId" />
+            </Principal>
+            <Dependent Role="Isler">
+              <PropertyRef Name="isDurumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Isler_Personeller">
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="0..1" />
+          <End Role="Isler" Type="Self.Isler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Personeller">
+              <PropertyRef Name="personelId" />
+            </Principal>
+            <Dependent Role="Isler">
+              <PropertyRef Name="isPersonelId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Personeller_YetkiTurler">
+          <End Role="YetkiTurler" Type="Self.YetkiTurler" Multiplicity="0..1" />
+          <End Role="Personeller" Type="Self.Personeller" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTurler">
+              <PropertyRef Name="yetkiTurId" />
+            </Principal>
+            <Dependent Role="Personeller">
+              <PropertyRef Name="personelYetkiTurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IsTakipDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Birimler" EntityType="Self.Birimler" />
+          <EntitySet Name="Durumlar" EntityType="Self.Durumlar" />
+          <EntitySet Name="Isler" EntityType="Self.Isler" />
+          <EntitySet Name="Personeller" EntityType="Self.Personeller" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="YetkiTurler" EntityType="Self.YetkiTurler" />
+          <AssociationSet Name="FK_Personeller_Birimler" Association="Self.FK_Personeller_Birimler">
+            <End Role="Birimler" EntitySet="Birimler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Isler_Durumlar" Association="Self.FK_Isler_Durumlar">
+            <End Role="Durumlar" EntitySet="Durumlar" />
+            <End Role="Isler" EntitySet="Isler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Isler_Personeller" Association="Self.FK_Isler_Personeller">
+            <End Role="Personeller" EntitySet="Personeller" />
+            <End Role="Isler" EntitySet="Isler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Personeller_YetkiTurler" Association="Self.FK_Personeller_YetkiTurler">
+            <End Role="YetkiTurler" EntitySet="YetkiTurler" />
+            <End Role="Personeller" EntitySet="Personeller" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IsTakipDBModelStoreContainer" CdmEntityContainer="IsTakipDBEntities">
+          <EntitySetMapping Name="Birimler">
+            <EntityTypeMapping TypeName="IsTakipDBModel.Birimler">
+              <MappingFragment StoreEntitySet="Birimler">
+                <ScalarProperty Name="birimId" ColumnName="birimId" />
+                <ScalarProperty Name="birimAd" ColumnName="birimAd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Durumlar">
+            <EntityTypeMapping TypeName="IsTakipDBModel.Durumlar">
+              <MappingFragment StoreEntitySet="Durumlar">
+                <ScalarProperty Name="durumId" ColumnName="durumId" />
+                <ScalarProperty Name="durumAd" ColumnName="durumAd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Isler">
+            <EntityTypeMapping TypeName="IsTakipDBModel.Isler">
+              <MappingFragment StoreEntitySet="Isler">
+                <ScalarProperty Name="isOkunma" ColumnName="isOkunma" />
+                <ScalarProperty Name="isYorum" ColumnName="isYorum" />
+                <ScalarProperty Name="IsId" ColumnName="IsId" />
+                <ScalarProperty Name="isBaslik" ColumnName="isBaslik" />
+                <ScalarProperty Name="isAciklama" ColumnName="isAciklama" />
+                <ScalarProperty Name="isPersonelId" ColumnName="isPersonelId" />
+                <ScalarProperty Name="iletilenTarih" ColumnName="iletilenTarih" />
+                <ScalarProperty Name="yapilanTarih" ColumnName="yapilanTarih" />
+                <ScalarProperty Name="isDurumId" ColumnName="isDurumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Personeller">
+            <EntityTypeMapping TypeName="IsTakipDBModel.Personeller">
+              <MappingFragment StoreEntitySet="Personeller">
+                <ScalarProperty Name="personelId" ColumnName="personelId" />
+                <ScalarProperty Name="personelAdSoyad" ColumnName="personelAdSoyad" />
+                <ScalarProperty Name="personelKullaniciAd" ColumnName="personelKullaniciAd" />
+                <ScalarProperty Name="personelParola" ColumnName="personelParola" />
+                <ScalarProperty Name="personelBirimId" ColumnName="personelBirimId" />
+                <ScalarProperty Name="personelYetkiTurId" ColumnName="personelYetkiTurId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="IsTakipDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YetkiTurler">
+            <EntityTypeMapping TypeName="IsTakipDBModel.YetkiTurler">
+              <MappingFragment StoreEntitySet="YetkiTurler">
+                <ScalarProperty Name="yetkiTurId" ColumnName="yetkiTurId" />
+                <ScalarProperty Name="yetkiTurAd" ColumnName="yetkiTurAd" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

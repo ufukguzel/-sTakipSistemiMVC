@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "Ata";
+    Layout = "~/Views/Shared/_LayoutYönetici.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="card">
+
+        <div class="card-header">
+            @ViewBag.birimAd birimi için İş Atama işlemi
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Ata", "Yonetici", FormMethod.Post))
+            {
+                <div class="mb-3">
+                    <label for="isBaslik" class="form-label">İş Başlığını Giriniz</label>
+                    <input type="text" class="form-control" id="isBaslik" name="isBaslik">
+                </div>
+                <div class="mb-3">
+                    <label for="isAciklama" class="form-label">İş Açıklamasını Giriniz</label>
+                    <input type="text" class="form-control" id="isAciklama" name="isAciklama">
+                </div>
+                <div class="mb-3">
+                    <label for="selectPer" class="form-label">Çalışan Seçiniz</label>
+                    <select class="form-select" name="selectPer" id="selectPer">
+                        @foreach (var personel in ViewBag.personeller)
+                        {
+                            <option value="@personel.personelId">@personel.personelAdSoyad</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-outline-primary" type="submit">İş Ata</button>
+                </div>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
